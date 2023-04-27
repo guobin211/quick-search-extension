@@ -14,37 +14,3 @@
     <div>Github</div>
   </div>
 </div>
-
-<style>
-  .main {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 320px;
-  }
-
-  .title {
-    display: block;
-    position: relative;
-    width: 320px;
-    text-align: center;
-    margin-bottom: 12px;
-  }
-
-  h3 {
-    font-size: 18px;
-    font-weight: 600;
-  }
-
-  .about {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 240px;
-    height: 28px;
-    line-height: 28px;
-    margin: 16px auto;
-    font-size: 14px;
-    color: #787878;
-  }
-</style>

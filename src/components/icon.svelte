@@ -16,12 +16,3 @@
 </script>
 
 <img class="icon" src={icon} alt="" draggable="false" style={style}>
-
-<style>
-  .icon {
-    display: block;
-    width: 100px;
-    height: 100px;
-    margin: 0 auto;
-  }
-</style>

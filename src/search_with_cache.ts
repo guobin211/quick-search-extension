@@ -1,8 +1,6 @@
 export class SearchWithCache {
-  database: string[][];
 
-  constructor(database: string[][]) {
-    this.database = database;
+  constructor() {
   }
 
   search(key: string): string[] {

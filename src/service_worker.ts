@@ -1,9 +1,9 @@
 import { SearchWithCache } from './search_with_cache';
-import database, { host } from './database';
+import * as database from './database';
 
 async function start() {
-  console.log(host);
-  const search = new SearchWithCache(database);
+  console.log(database);
+  const search = new SearchWithCache();
   chrome.omnibox.onInputChanged.addListener((text, suggest) => {
     console.log('inputChanged: ' + text);
     const result = search.search(text);
