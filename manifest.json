@@ -1,22 +1,22 @@
 {
-  "name": "Ts Search Extension",
+  "name": "Node Search Extension",
   "description": "The quick search extension for Developer!",
   "version": "0.1.1",
   "manifest_version": 3,
   "icons": {
-    "128": "assets/ts.png"
+    "128": "assets/node.png"
   },
   "permissions": ["storage", "unlimitedStorage"],
   "action": {
-    "default_title": "Ts Search Extension",
-    "default_icon": "assets/ts.png",
+    "default_title": "Node Search Extension",
+    "default_icon": "assets/node.png",
     "default_popup": "src/popup.html"
   },
   "background": {
     "service_worker": "service_worker.js"
   },
   "omnibox": {
-    "keyword": "ts"
+    "keyword": "node"
   },
   "options_ui": {
     "open_in_tab": true,
