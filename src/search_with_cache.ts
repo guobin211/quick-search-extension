@@ -5,15 +5,17 @@ type Data = [string, string, string | undefined];
 type Suggest = chrome.omnibox.SuggestResult;
 
 // 快速搜索
-export function quick_search(key: string, list: Data[]): Suggest[] {
+export function quick_search(key: string, list: Data[], c: Compat): Suggest[] {
   const res = [];
   for (let i = 0; i < list.length; i++) {
     const [href, title, desc] = list[i];
-    const name = title.toLowerCase().replace(/[-_]/gi, '');
-    if (name.includes(key)) {
+    const n = title.toLowerCase().replace(/[-_]/gi, '');
+    const s = key.toLowerCase().replace(/[-_]/gi, '');
+    // description: `${c.match(doc.name)} - ${c.dim(c.escape(doc.title))}`,
+    if (n.includes(s) || s.includes(n)) {
       res.push({
         content: href,
-        description: `${title} ${desc || ''}`
+        description: `${c.match(c.escape(title))} - ${c.dim(c.escape(desc)) || ''}`
       });
     }
   }
@@ -107,7 +109,7 @@ export class SearchWithCache {
       return this.format_suggest(cache);
     }
     // 查找
-    res = quick_search(query, this.db);
+    res = quick_search(query, this.db, this.c);
     if (res.length > 0) {
       this.find_list = res;
       this.set_default_suggest();

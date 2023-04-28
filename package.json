@@ -5,7 +5,6 @@
   "type": "module",
   "scripts": {
     "dev": "vite --mode node",
-    "build:database": "node scripts/build_database.js",
     "build:node": "vite build --mode node",
     "build:js": "vite build --mode js",
     "build:css": "vite build --mode css",

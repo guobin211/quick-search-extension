@@ -120,10 +120,10 @@ export const host = '${host}';
   await write_database('css', code);
 }
 
-async function build_html_database() {
+async function build_database(name: string) {
   await writeFile(path.join(database, 'index.ts'), `
 // 脚本生成
-import * as database from './html';
+import * as database from './${name}';
 export default database;
 `);
 }
@@ -140,7 +140,13 @@ export default defineConfig(async ({ mode }) => {
       await build_css_database();
       break;
     case 'html':
-      await build_html_database();
+      await build_database('html');
+      break;
+    case 'js':
+      await build_database('js');
+      break;
+    case 'ts':
+      await build_database('ts');
       break;
     default:
       console.log(`unknown mode: ${mode}`);
