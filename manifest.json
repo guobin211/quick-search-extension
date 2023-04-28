@@ -1,22 +1,22 @@
 {
-  "name": "Node Search Extension",
+  "name": "Development Search Extension",
   "description": "The quick search extension for Developer!",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "manifest_version": 3,
   "icons": {
-    "128": "assets/node.png"
+    "128": "assets/development.png"
   },
   "permissions": ["storage", "unlimitedStorage"],
   "action": {
-    "default_title": "Node Search Extension",
-    "default_icon": "assets/node.png",
+    "default_title": "Development Search Extension",
+    "default_icon": "assets/development.png",
     "default_popup": "src/popup.html"
   },
   "background": {
     "service_worker": "service_worker.js"
   },
   "omnibox": {
-    "keyword": "node"
+    "keyword": "development"
   },
   "options_ui": {
     "open_in_tab": true,

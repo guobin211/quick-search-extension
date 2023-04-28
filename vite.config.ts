@@ -9,6 +9,7 @@ import { viteStaticCopy } from 'vite-plugin-static-copy';
 import postcssPresetEnv from 'postcss-preset-env';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 import { promisify } from 'util';
+import { version} from './package.json';
 
 const writeFile = promisify(fs.writeFile);
 const root = path.dirname(fileURLToPath(import.meta.url));
@@ -31,23 +32,6 @@ export default database;
   ]);
 }
 
-async function build_node_database() {
-  const node18 = 'https://nodejs.cn/api/index.html';
-  const result = [];
-  const body = await fetch(node18).then(res => res.text());
-  const dom = cheerio.load(body);
-  const content = dom('div#apicontent').children().last();
-  const $ = cheerio.load(content.html());
-  $('a').each((i, el) => {
-    result.push([$(el).text(), $(el).attr('href')]);
-  });
-  const code = `const database = ${JSON.stringify(result)};
-export const host = 'https://nodejs.cn/api/';
-export default database;
-`;
-  await write__database('node', code);
-}
-
 function build_manifest(name: string) {
   const appName = name.split('').map((c, i) => i === 0 ? c.toUpperCase() : c).join('');
 
@@ -55,7 +39,7 @@ function build_manifest(name: string) {
     return `{
   "name": "${appName} Search Extension",
   "description": "The quick search extension for Developer!",
-  "version": "0.1.0",
+  "version": "${version}",
   "manifest_version": 3,
   "icons": {
     "128": "assets/${name}.png"
@@ -90,6 +74,52 @@ function build_manifest(name: string) {
   return appName;
 }
 
+async function build_node_database() {
+  const node18 = 'https://nodejs.cn/api/index.html';
+  const result = [];
+  const body = await fetch(node18).then(res => res.text());
+  const dom = cheerio.load(body);
+  const content = dom('div#apicontent').children().last();
+  const $ = cheerio.load(content.html());
+  $('a').each((i, el) => {
+    result.push([$(el).attr('href'), $(el).text()]);
+  });
+  const code = `export const db = ${JSON.stringify(result)};
+export const host = 'https://nodejs.cn/api/';
+`;
+  await write__database('node', code);
+}
+
+async function build_css_database() {
+  const host = 'https://www.w3school.com.cn';
+  const index = 'https://www.w3school.com.cn/cssref/index.asp';
+  const result = [
+    ['/cssref/css_selectors.asp', 'css selectors', 'CSS 选择器'],
+    ['/cssref/css_functions.asp', 'function', 'CSS 函数'],
+  ];
+  const body = await fetch(index).then(res => res.text());
+  let $ = cheerio.load(body);
+  $('div#maincontent tr').each((i, el) => {
+    let title, href, desc;
+    $(el).children().each((i, el) => {
+      if (i === 1) {
+        desc = $(el).text();
+      } else {
+        const a = $(el.firstChild);
+        title = `${a.text()}`;
+        href = a.attr('href');
+      }
+    });
+    if (href && title) {
+      result.push([href, title, desc]);
+    }
+  });
+  const code = `export const db = ${JSON.stringify(result)};
+export const host = '${host}';
+`;
+  await write__database('css', code);
+}
+
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }) => {
   const current_output = path.join(base, mode);
@@ -98,10 +128,13 @@ export default defineConfig(async ({ mode }) => {
     case 'node':
       await build_node_database();
       break;
+    case 'css':
+      await build_css_database();
+      break;
     default:
       console.log(`unknown mode: ${mode}`);
       process.exit(-1);
-      return ;
+      return;
   }
   return {
     define: {
