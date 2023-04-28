@@ -9,7 +9,7 @@ import { viteStaticCopy } from 'vite-plugin-static-copy';
 import postcssPresetEnv from 'postcss-preset-env';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 import { promisify } from 'util';
-import { version} from './package.json';
+import { version } from './package.json';
 
 const writeFile = promisify(fs.writeFile);
 const root = path.dirname(fileURLToPath(import.meta.url));
@@ -21,7 +21,7 @@ const inputs = [popup, options, service_worker];
 const base = path.join(root, 'extension');
 const database = path.join(root, 'src/database');
 
-async function write__database(name: string, data: string) {
+async function write_database(name: string, data: string) {
   await Promise.all([
     writeFile(path.join(database, `${name}.ts`), data),
     writeFile(path.join(database, 'index.ts'), `
@@ -87,7 +87,7 @@ async function build_node_database() {
   const code = `export const db = ${JSON.stringify(result)};
 export const host = 'https://nodejs.cn/api/';
 `;
-  await write__database('node', code);
+  await write_database('node', code);
 }
 
 async function build_css_database() {
@@ -95,7 +95,7 @@ async function build_css_database() {
   const index = 'https://www.w3school.com.cn/cssref/index.asp';
   const result = [
     ['/cssref/css_selectors.asp', 'css selectors', 'CSS 选择器'],
-    ['/cssref/css_functions.asp', 'function', 'CSS 函数'],
+    ['/cssref/css_functions.asp', 'function', 'CSS 函数']
   ];
   const body = await fetch(index).then(res => res.text());
   let $ = cheerio.load(body);
@@ -117,7 +117,15 @@ async function build_css_database() {
   const code = `export const db = ${JSON.stringify(result)};
 export const host = '${host}';
 `;
-  await write__database('css', code);
+  await write_database('css', code);
+}
+
+async function build_html_database() {
+  await writeFile(path.join(database, 'index.ts'), `
+// 脚本生成
+import * as database from './html';
+export default database;
+`);
 }
 
 // https://vitejs.dev/config/
@@ -130,6 +138,9 @@ export default defineConfig(async ({ mode }) => {
       break;
     case 'css':
       await build_css_database();
+      break;
+    case 'html':
+      await build_html_database();
       break;
     default:
       console.log(`unknown mode: ${mode}`);

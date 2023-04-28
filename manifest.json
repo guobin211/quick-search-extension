@@ -1,22 +1,22 @@
 {
-  "name": "Development Search Extension",
+  "name": "Html Search Extension",
   "description": "The quick search extension for Developer!",
   "version": "0.1.1",
   "manifest_version": 3,
   "icons": {
-    "128": "assets/development.png"
+    "128": "assets/html.png"
   },
   "permissions": ["storage", "unlimitedStorage"],
   "action": {
-    "default_title": "Development Search Extension",
-    "default_icon": "assets/development.png",
+    "default_title": "Html Search Extension",
+    "default_icon": "assets/html.png",
     "default_popup": "src/popup.html"
   },
   "background": {
     "service_worker": "service_worker.js"
   },
   "omnibox": {
-    "keyword": "development"
+    "keyword": "html"
   },
   "options_ui": {
     "open_in_tab": true,
