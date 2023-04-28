@@ -12,7 +12,9 @@
     "build:ts": "vite build --mode ts",
     "build:react": "vite build --mode react",
     "build:vue": "vite build --mode vue",
-    "build:v": "vite build --mode v"
+    "build:v": "vite build --mode v",
+    "build:all": "npm run build:css && npm run build:html && npm run build:js && npm run build:node && npm run build:ts",
+    "release": "node release.js"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.1.1",

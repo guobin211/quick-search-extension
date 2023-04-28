@@ -1,4 +1,4 @@
 
-  // 脚本生成
-import * as database from './node';
+// 脚本生成
+import * as database from './ts';
 export default database;
